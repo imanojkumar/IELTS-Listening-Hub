@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import { authErrorMessage } from "@/lib/auth-errors";
+import { usePostAuthRedirect } from "@/lib/use-auth-redirect";
 import {
   AuthShell,
   Field,
@@ -13,12 +13,13 @@ import {
   AuthSuccess,
   SubmitButton,
 } from "@/components/auth-shell";
+import { GoogleButton, OrDivider } from "@/components/google-button";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function LoginPage() {
   const { login, resetPassword } = useAuth();
-  const router = useRouter();
+  usePostAuthRedirect();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -38,7 +39,7 @@ export default function LoginPage() {
     setSubmitting(true);
     try {
       await login(email.trim(), password);
-      router.replace("/dashboard");
+      // On success, auth state updates and usePostAuthRedirect() navigates.
     } catch (err) {
       setError(authErrorMessage(err));
     } finally {
@@ -77,45 +78,49 @@ export default function LoginPage() {
         </>
       }
     >
-      <form onSubmit={onSubmit} className="space-y-4" noValidate>
-        <AuthError message={error} />
-        <AuthSuccess message={notice} />
+      <div className="space-y-5">
+        <GoogleButton onError={setError} />
+        <OrDivider />
+        <form onSubmit={onSubmit} className="space-y-4" noValidate>
+          <AuthError message={error} />
+          <AuthSuccess message={notice} />
 
-        <Field label="Email" id="email">
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={authInputClass()}
-            placeholder="you@example.com"
-          />
-        </Field>
+          <Field label="Email" id="email">
+            <input
+              id="email"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={authInputClass()}
+              placeholder="you@example.com"
+            />
+          </Field>
 
-        <Field label="Password" id="password">
-          <input
-            id="password"
-            type="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={authInputClass()}
-            placeholder="••••••••"
-          />
-        </Field>
+          <Field label="Password" id="password">
+            <input
+              id="password"
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={authInputClass()}
+              placeholder="••••••••"
+            />
+          </Field>
 
-        <SubmitButton loading={submitting}>Login</SubmitButton>
+          <SubmitButton loading={submitting}>Login</SubmitButton>
 
-        <button
-          type="button"
-          onClick={onForgotPassword}
-          disabled={resetting}
-          className="w-full text-center text-sm font-medium text-primary hover:underline disabled:opacity-60"
-        >
-          {resetting ? "Sending reset email…" : "Forgot Password"}
-        </button>
-      </form>
+          <button
+            type="button"
+            onClick={onForgotPassword}
+            disabled={resetting}
+            className="w-full text-center text-sm font-medium text-primary hover:underline disabled:opacity-60"
+          >
+            {resetting ? "Sending reset email…" : "Forgot Password"}
+          </button>
+        </form>
+      </div>
     </AuthShell>
   );
 }

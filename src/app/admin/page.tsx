@@ -14,6 +14,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { RequireAdmin } from "@/components/require-admin";
 
 interface TestReport {
   file: string;
@@ -50,6 +51,14 @@ function basename(path: string) {
 }
 
 export default function AdminPage() {
+  return (
+    <RequireAdmin>
+      <AdminImporter />
+    </RequireAdmin>
+  );
+}
+
+function AdminImporter() {
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<ImportResult | null>(null);
   const [error, setError] = useState<string | null>(null);

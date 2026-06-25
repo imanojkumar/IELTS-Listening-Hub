@@ -28,6 +28,8 @@ function DashboardContent() {
   const name = profile?.name || currentUser?.displayName || "Student";
   const email = profile?.email || currentUser?.email || "";
   const phone = profile?.phone || "—";
+  const photoURL = currentUser?.photoURL || profile?.photoURL || "";
+  const initials = getInitials(name);
 
   async function handleLogout() {
     await logout();
@@ -54,12 +56,17 @@ function DashboardContent() {
       </header>
 
       <main className="mx-auto w-[95%] max-w-5xl flex-1 py-10">
-        <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-          Welcome, {name}
-        </h1>
-        <p className="mt-1.5 text-sm text-muted-foreground">
-          Pick up where you left off or review your details.
-        </p>
+        <div className="flex items-center gap-4">
+          <Avatar photoURL={photoURL} initials={initials} />
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+              Welcome, {name}
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Pick up where you left off or review your details.
+            </p>
+          </div>
+        </div>
 
         <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2">
           {/* Continue Practice */}
@@ -130,6 +137,32 @@ function DetailItem({ label, value }: { label: string; value: string }) {
         {label}
       </dt>
       <dd className="mt-1 break-words text-sm font-medium text-foreground">{value}</dd>
+    </div>
+  );
+}
+
+function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "?";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function Avatar({ photoURL, initials }: { photoURL: string; initials: string }) {
+  if (photoURL) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={photoURL}
+        alt=""
+        referrerPolicy="no-referrer"
+        className="h-14 w-14 shrink-0 rounded-full border border-border object-cover shadow-sm"
+      />
+    );
+  }
+  return (
+    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground shadow-sm">
+      {initials}
     </div>
   );
 }

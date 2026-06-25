@@ -3,6 +3,7 @@ import { Headphones, Sparkles, ShieldCheck, Settings } from "lucide-react";
 import { getTestSummaries } from "@/lib/tests";
 import { TestCard } from "@/components/test-card";
 import { AuthNav } from "@/components/auth-nav";
+import { AdminLink } from "@/components/admin-link";
 
 export default function HomePage() {
   const tests = getTestSummaries();
@@ -64,12 +65,7 @@ export default function HomePage() {
               {tests.length} practice {tests.length === 1 ? "test" : "tests"} · IELTS General Training
             </p>
           </div>
-          <Link
-            href="/admin"
-            className="hidden items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted sm:inline-flex"
-          >
-            <Settings className="h-4 w-4" aria-hidden /> Admin · Import
-          </Link>
+          <AdminLink />
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

@@ -178,30 +178,90 @@ jobs:
 
 Student auth is layered on top of the existing app without touching the test engine. It uses **Firebase Authentication** (email/password) + **Cloud Firestore** for profiles, and — because the site is a static export with no server — **route protection runs client-side**.
 
-**Flow:** Register → email verification → Login → Dashboard, with Profile editing and Logout.
+**Flow:** Register → email verification → Login → Dashboard, with Profile editing and Logout. **Google sign-in** ("Continue with Google" on both /login and /register) is also supported — Google accounts are pre-verified, so they skip the email-verification step and land straight on the dashboard. New Google users get a Firestore profile created automatically with `provider: "google"` (plus `photoURL`); email/password users are stored with `provider: "password"`.
+
+### Admin area (secured)
+
+The content importer at **`/admin`** is restricted to administrators, and authorization is stored in **Firestore**, not in code. There is no email allowlist and no admin env var.
+
+A separate `roles` collection holds one document per administrator, keyed by Firebase UID:
+
+```
+roles/{uid}  →  { "role": "admin" }
+```
+
+`src/lib/roles.ts` exposes the reusable helpers `getUserRole(uid)` and `isAdmin(uid)`, which read `roles/{uid}` and treat a missing document (or any role other than `"admin"`) as a normal student. The auth context **subscribes** to `roles/{uid}` with a real-time `onSnapshot` listener and exposes the live value as `useAuth().isAdmin` / `.role`. Navigation reads the in-memory value (no per-page reads), and because it's a live subscription, **granting a role in the console takes effect in the open session immediately — no re-login or hard refresh**. Exactly one listener runs at a time (the previous is detached before a new one attaches on auth changes), and it's torn down on logout/unmount, so there are no leaks or duplicate listeners.
+
+Behaviour at `/admin` (`src/components/require-admin.tsx`): unauthenticated → `/login`; authenticated non-admin → `/403`; admin → importer. The "Admin · Import" link on the homepage (`src/components/admin-link.tsx`) renders only when `isAdmin` is true, so students never see it. The importer component never renders for anyone whose cached role isn't `"admin"`.
+
+#### Creating the first administrator
+
+Roles are provisioned from the Firebase console (there's no admin UI by design):
+
+1. Have the person sign in once (Google or email) so their Firebase Auth account exists.
+2. Copy their **UID** from **Authentication → Users** — use the console's copy button. **Do not retype it.** Firebase UIDs mix look-alike characters (lowercase `l` vs uppercase `I`, `0` vs `O`), and a single wrong character creates a `roles` document that the app can never match, silently denying admin access.
+3. In **Firestore**, create a collection `roles`, then a document whose **ID is that exact UID**, with a single field:
+
+   ```
+   roles/<THAT_EXACT_UID>
+   { "role": "admin" }
+   ```
+
+4. They now have admin access on next sign-in. Repeat for each additional admin.
+
+> If `/admin` still sends you to `/403` after creating the role doc, open `/403` while signed in: it shows your **exact** UID with a copy button. Copy that, delete the mistyped `roles` document, and recreate it with the copied id. A mismatch here is the #1 cause of "role exists but isn't detected".
+
+#### Firestore security rules (add the `roles` block)
+
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /roles/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId; // read own role
+      allow write: if false; // managed only from the console
+    }
+  }
+}
+```
+
+Each user can read only their own role; nobody can grant themselves admin from the client.
+
+### Login redirect memory
+
+If a logged-out visitor opens a protected page (e.g. `/test/5`), the guard remembers that path and sends them to `/login`; after a successful sign-in — **Google or email** — they're returned to `/test/5` instead of the dashboard. Clicking **Sign In** from the homepage carries no pending path, so it lands on `/dashboard` as before. The intended path is held per-tab in `sessionStorage` (`src/lib/redirect.ts`), which keeps it compatible with static export (no `useSearchParams` Suspense boundary needed).
 
 **Pages added:** `/register`, `/verify-email`, `/login`, `/dashboard`, `/profile`. The homepage stays public and shows Login/Register (logged out) or Dashboard/Logout (logged in) in the top-right.
 
-**Protected routes:** `/test/*`, `/dashboard`, `/profile`. An unauthenticated visitor is redirected to `/login`; a signed-in but unverified visitor is sent to `/verify-email`. Guarding happens in `src/components/require-auth.tsx` (a client component that waits for auth state, shows a loader, then redirects or renders). Test pages keep their static generation (`generateStaticParams`) — the guard wraps the client `TestRunner` inside the server page, so the pre-rendered HTML is just the loader and the real test only mounts once access is confirmed.
+**Protected routes:** `/test/*`, `/dashboard`, `/profile` (any signed-in user) and `/admin` (allowlisted admins only — see below). An unauthenticated visitor is redirected to `/login`; a signed-in but unverified visitor is sent to `/verify-email`. Guarding happens in `src/components/require-auth.tsx` (a client component that waits for auth state, shows a loader, then redirects or renders). Test pages keep their static generation (`generateStaticParams`) — the guard wraps the client `TestRunner` inside the server page, so the pre-rendered HTML is just the loader and the real test only mounts once access is confirmed.
 
 **Key files**
 
 ```
 src/lib/firebase.ts          Firebase init (auth + firestore); analytics lazy-loaded
 src/lib/user.ts              UserProfile type + Firestore CRUD (collection: users)
+src/lib/roles.ts             getUserRole() + isAdmin() (collection: roles)
+src/lib/redirect.ts          post-login redirect memory (sessionStorage)
 src/lib/auth-errors.ts       Friendly messages for Firebase error codes
-src/context/auth-context.tsx AuthProvider + useAuth (currentUser, profile, loading,
-                             register, login, logout, resetPassword, …)
-src/components/require-auth.tsx   client route guard
-src/components/auth-nav.tsx       homepage top-right nav
+src/context/auth-context.tsx AuthProvider + useAuth (currentUser, profile, role,
+                             isAdmin, loading, register, login, signInWithGoogle, …)
+src/components/require-auth.tsx   client route guard (signed-in users)
+src/components/require-admin.tsx  client route guard (cached admin role → /403)
+src/components/google-button.tsx  "Continue with Google" button
+src/components/auth-nav.tsx       homepage top-right nav (Sign In / Dashboard)
+src/components/admin-link.tsx     admin-only homepage importer link
 src/components/auth-shell.tsx     shared auth-page styling
 ```
 
 ### One-time Firebase console setup
 
 1. **Authentication → Sign-in method:** enable **Email/Password**.
-2. **Authentication → Settings → Authorized domains:** add your Pages domain (`imanojkumar.github.io`) — already done for this project. Add `localhost` for local dev.
-3. **Firestore Database:** create the database (production mode), then set rules so each user can only touch their own document:
+2. **Authentication → Sign-in method:** enable **Google**. *(Required before deployment — the "Continue with Google" buttons on /login and /register will fail until this provider is turned on.)* Pick a project support email when prompted.
+3. **Authentication → Settings → Authorized domains:** add your Pages domain (`imanojkumar.github.io`) — already done for this project. Add `localhost` for local dev. Google popup sign-in only works from authorized domains.
+4. **Firestore Database:** create the database (production mode), then set rules so each user can only touch their own document:
 
    ```
    rules_version = '2';
@@ -209,6 +269,10 @@ src/components/auth-shell.tsx     shared auth-page styling
      match /databases/{database}/documents {
        match /users/{userId} {
          allow read, write: if request.auth != null && request.auth.uid == userId;
+       }
+       match /roles/{userId} {
+         allow read: if request.auth != null && request.auth.uid == userId;
+         allow write: if false; // admins are provisioned from the console
        }
      }
    }
@@ -225,12 +289,15 @@ The Firebase **web config is not secret** (these keys are designed to ship in th
   "phone": "…",
   "email": "…",
   "emailVerified": true,
+  "photoURL": "…",
+  "provider": "google | password",
   "createdAt": "<serverTimestamp>",
-  "updatedAt": "<serverTimestamp>"
+  "updatedAt": "<serverTimestamp>",
+  "lastLogin": "<serverTimestamp>"
 }
 ```
 
-Created automatically on registration; `name`/`phone` are editable from `/profile` (email is immutable).
+Created automatically on registration or first Google login; `name`/`phone` are editable from `/profile` (email is immutable).
 
 > **Static-export note:** there is no `next/middleware` on GitHub Pages, so protection is client-side by design — a determined user could read the *static* test JSON directly, but the UI flow, dashboard, and profile are gated. If you later need hard server-side gating, that would require moving off static hosting (e.g. Firebase Hosting with Cloud Functions or a Node host).
 

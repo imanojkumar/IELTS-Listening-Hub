@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import { authErrorMessage } from "@/lib/auth-errors";
+import { usePostAuthRedirect } from "@/lib/use-auth-redirect";
 import {
   AuthShell,
   Field,
@@ -12,12 +13,14 @@ import {
   AuthError,
   SubmitButton,
 } from "@/components/auth-shell";
+import { GoogleButton, OrDivider } from "@/components/google-button";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function RegisterPage() {
   const { register } = useAuth();
   const router = useRouter();
+  usePostAuthRedirect();
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -74,8 +77,11 @@ export default function RegisterPage() {
         </>
       }
     >
-      <form onSubmit={onSubmit} className="space-y-4" noValidate>
-        <AuthError message={error} />
+      <div className="space-y-5">
+        <GoogleButton onError={setError} />
+        <OrDivider />
+        <form onSubmit={onSubmit} className="space-y-4" noValidate>
+          <AuthError message={error} />
 
         <Field label="Full Name" id="name">
           <input
@@ -138,7 +144,8 @@ export default function RegisterPage() {
         </Field>
 
         <SubmitButton loading={submitting}>Create Account</SubmitButton>
-      </form>
+        </form>
+      </div>
     </AuthShell>
   );
 }

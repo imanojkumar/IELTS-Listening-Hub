@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { LayoutDashboard, LogOut } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
+import { clearRedirect } from "@/lib/redirect";
 
 /**
  * Auth-aware navigation for the (public) homepage hero. Renders nothing until
@@ -47,15 +48,10 @@ export function AuthNav() {
     <nav className="flex items-center gap-2">
       <Link
         href="/login"
-        className="inline-flex items-center rounded-lg border border-white/20 px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+        onClick={() => clearRedirect()}
+        className="inline-flex items-center rounded-lg bg-white px-4 py-2 text-sm font-semibold text-navy shadow-sm transition-transform hover:scale-[1.02]"
       >
-        Login
-      </Link>
-      <Link
-        href="/register"
-        className="inline-flex items-center rounded-lg bg-white px-3.5 py-2 text-sm font-semibold text-navy shadow-sm transition-transform hover:scale-[1.02]"
-      >
-        Register
+        Sign In
       </Link>
     </nav>
   );

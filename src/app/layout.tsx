@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { SiteFooter } from "@/components/site-footer";
+import { ConditionalFooter } from "@/components/conditional-footer";
 import { AuthProvider } from "@/context/auth-context";
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col bg-background font-sans text-foreground antialiased">
         <AuthProvider>
           {children}
-          <SiteFooter />
+          <ConditionalFooter />
         </AuthProvider>
       </body>
     </html>

@@ -13,14 +13,19 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
+export type AuthProviderId = "google" | "password";
+
 export interface UserProfile {
   uid: string;
   name: string;
   phone: string;
   email: string;
   emailVerified: boolean;
+  photoURL?: string;
+  provider?: AuthProviderId;
   createdAt?: Timestamp | null;
   updatedAt?: Timestamp | null;
+  lastLogin?: Timestamp | null;
 }
 
 export interface NewProfileInput {
@@ -29,11 +34,13 @@ export interface NewProfileInput {
   phone: string;
   email: string;
   emailVerified: boolean;
+  provider: AuthProviderId;
+  photoURL?: string;
 }
 
 const usersDoc = (uid: string) => doc(db, "users", uid);
 
-/** Create the user's Firestore document at registration time. */
+/** Create the user's Firestore document (registration or first Google login). */
 export async function createUserProfile(input: NewProfileInput): Promise<void> {
   await setDoc(usersDoc(input.uid), {
     uid: input.uid,
@@ -41,8 +48,11 @@ export async function createUserProfile(input: NewProfileInput): Promise<void> {
     phone: input.phone,
     email: input.email,
     emailVerified: input.emailVerified,
+    photoURL: input.photoURL ?? "",
+    provider: input.provider,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
+    lastLogin: serverTimestamp(),
   });
 }
 
@@ -62,3 +72,10 @@ export async function updateUserProfile(
     updatedAt: serverTimestamp(),
   });
 }
+
+/** Stamp the most recent login time (returning Google users). */
+export async function updateLastLogin(uid: string): Promise<void> {
+  await updateDoc(usersDoc(uid), { lastLogin: serverTimestamp() });
+}
+
+

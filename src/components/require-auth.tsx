@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Headphones } from "lucide-react";
 import type { ReactNode } from "react";
 import { useAuth } from "@/context/auth-context";
+import { setRedirect } from "@/lib/redirect";
 
 /**
  * Client-side route guard. On a static-export site there is no server
@@ -22,6 +23,7 @@ export function RequireAuth({
 }) {
   const { currentUser, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   const verifiedOk = !requireVerified || Boolean(currentUser?.emailVerified);
   const allowed = Boolean(currentUser) && verifiedOk;
@@ -29,11 +31,12 @@ export function RequireAuth({
   useEffect(() => {
     if (loading) return;
     if (!currentUser) {
+      setRedirect(pathname);
       router.replace("/login");
     } else if (requireVerified && !currentUser.emailVerified) {
       router.replace("/verify-email");
     }
-  }, [loading, currentUser, requireVerified, router]);
+  }, [loading, currentUser, requireVerified, pathname, router]);
 
   if (loading || !allowed) return <AuthLoader />;
   return <>{children}</>;
