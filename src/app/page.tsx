@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Headphones, Sparkles, ShieldCheck, Settings } from "lucide-react";
 import { getTestSummaries } from "@/lib/tests";
 import { TestCard } from "@/components/test-card";
+import { AuthNav } from "@/components/auth-nav";
 
 export default function HomePage() {
   const tests = getTestSummaries();
@@ -11,9 +12,12 @@ export default function HomePage() {
       {/* Hero */}
       <section className="border-b border-border bg-navy text-navy-foreground">
         <div className="mx-auto w-[95%] max-w-[1800px] py-14 sm:py-20">
-          <div className="flex items-center gap-2 text-sm font-medium text-white/70">
-            <Headphones className="h-4 w-4" aria-hidden />
-            IELTS General Training · Listening
+          <div className="mb-8 flex items-center justify-between gap-4">
+            <span className="flex items-center gap-2 text-sm font-medium text-white/70">
+              <Headphones className="h-4 w-4" aria-hidden />
+              IELTS General Training · Listening
+            </span>
+            <AuthNav />
           </div>
           <h1 className="mt-4 max-w-3xl font-display text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
             Practice listening the way the real exam feels.

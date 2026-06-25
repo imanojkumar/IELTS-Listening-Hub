@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { SiteFooter } from "@/components/site-footer";
+import { AuthProvider } from "@/context/auth-context";
 
 export const metadata: Metadata = {
   title: "IELTS Listening Hub — General Training Practice Tests",
@@ -19,8 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex min-h-screen flex-col bg-background font-sans text-foreground antialiased">
-        {children}
-        <SiteFooter />
+        <AuthProvider>
+          {children}
+          <SiteFooter />
+        </AuthProvider>
       </body>
     </html>
   );

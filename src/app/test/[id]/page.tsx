@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getAllTestIds, getTestById } from "@/lib/tests";
 import { TestRunner } from "@/components/test-runner";
+import { RequireAuth } from "@/components/require-auth";
 
 export function generateStaticParams() {
   return getAllTestIds().map((id) => ({ id: String(id) }));
@@ -26,5 +27,9 @@ export default async function TestPage({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const test = getTestById(Number(id));
   if (!test) notFound();
-  return <TestRunner test={test} />;
+  return (
+    <RequireAuth>
+      <TestRunner test={test} />
+    </RequireAuth>
+  );
 }

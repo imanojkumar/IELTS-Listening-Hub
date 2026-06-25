@@ -174,7 +174,67 @@ jobs:
 
 ---
 
-## Features at a glance
+## Authentication & access control (Firebase)
+
+Student auth is layered on top of the existing app without touching the test engine. It uses **Firebase Authentication** (email/password) + **Cloud Firestore** for profiles, and — because the site is a static export with no server — **route protection runs client-side**.
+
+**Flow:** Register → email verification → Login → Dashboard, with Profile editing and Logout.
+
+**Pages added:** `/register`, `/verify-email`, `/login`, `/dashboard`, `/profile`. The homepage stays public and shows Login/Register (logged out) or Dashboard/Logout (logged in) in the top-right.
+
+**Protected routes:** `/test/*`, `/dashboard`, `/profile`. An unauthenticated visitor is redirected to `/login`; a signed-in but unverified visitor is sent to `/verify-email`. Guarding happens in `src/components/require-auth.tsx` (a client component that waits for auth state, shows a loader, then redirects or renders). Test pages keep their static generation (`generateStaticParams`) — the guard wraps the client `TestRunner` inside the server page, so the pre-rendered HTML is just the loader and the real test only mounts once access is confirmed.
+
+**Key files**
+
+```
+src/lib/firebase.ts          Firebase init (auth + firestore); analytics lazy-loaded
+src/lib/user.ts              UserProfile type + Firestore CRUD (collection: users)
+src/lib/auth-errors.ts       Friendly messages for Firebase error codes
+src/context/auth-context.tsx AuthProvider + useAuth (currentUser, profile, loading,
+                             register, login, logout, resetPassword, …)
+src/components/require-auth.tsx   client route guard
+src/components/auth-nav.tsx       homepage top-right nav
+src/components/auth-shell.tsx     shared auth-page styling
+```
+
+### One-time Firebase console setup
+
+1. **Authentication → Sign-in method:** enable **Email/Password**.
+2. **Authentication → Settings → Authorized domains:** add your Pages domain (`imanojkumar.github.io`) — already done for this project. Add `localhost` for local dev.
+3. **Firestore Database:** create the database (production mode), then set rules so each user can only touch their own document:
+
+   ```
+   rules_version = '2';
+   service cloud.firestore {
+     match /databases/{database}/documents {
+       match /users/{userId} {
+         allow read, write: if request.auth != null && request.auth.uid == userId;
+       }
+     }
+   }
+   ```
+
+The Firebase **web config is not secret** (these keys are designed to ship in the client; security comes from Auth + the Firestore rules + authorized domains). The values are baked into `src/lib/firebase.ts` as defaults and can be overridden with `NEXT_PUBLIC_FIREBASE_*` env vars — see `.env.local.example`. To point at a different Firebase project, copy that file to `.env.local` and fill it in.
+
+### Firestore `users` document
+
+```json
+{
+  "uid": "…",
+  "name": "…",
+  "phone": "…",
+  "email": "…",
+  "emailVerified": true,
+  "createdAt": "<serverTimestamp>",
+  "updatedAt": "<serverTimestamp>"
+}
+```
+
+Created automatically on registration; `name`/`phone` are editable from `/profile` (email is immutable).
+
+> **Static-export note:** there is no `next/middleware` on GitHub Pages, so protection is client-side by design — a determined user could read the *static* test JSON directly, but the UI flow, dashboard, and profile are gated. If you later need hard server-side gating, that would require moving off static hosting (e.g. Firebase Hosting with Cloud Functions or a Node host).
+
+
 
 - **Auto-start** — five seconds after the page finishes loading, a visible countdown runs and then the recording **and** section timer begin together. If the browser blocks autoplay (some do without a prior gesture), the play button highlights so the candidate can tap once to start.
 - **Auto-save** — every keystroke persists to `localStorage` (keyed per test); refresh and your answers return.
