@@ -1,0 +1,275 @@
+{
+  "id": 3,
+  "slug": "test03",
+  "title": "IELTS General Listening Test 3",
+  "type": "IELTS General Training",
+  "audio": "/audio/test03.mp3",
+  "image": "/images/test03.png",
+  "totalQuestions": 10,
+  "durationSeconds": 480,
+  "sections": [
+    {
+      "id": 1,
+      "title": "Section 1",
+      "durationSeconds": 480,
+      "questionRange": "1-10",
+      "groups": [
+        {
+          "id": "g1",
+          "type": "table",
+          "range": "1-5",
+          "numbers": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "marks": 5,
+          "instructions": "Complete the table below.",
+          "wordLimit": "Write ONE WORD AND/OR A NUMBER for each answer.",
+          "tableColumns": [
+            "Room Name",
+            "Capacity",
+            "Included Features",
+            "Cost per Hour"
+          ],
+          "tableRows": [
+            [
+              {
+                "segments": [
+                  {
+                    "text": "The Willow Room"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "40"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "Small "
+                  },
+                  {
+                    "blank": 1
+                  },
+                  {
+                    "text": " attached"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "£15"
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "segments": [
+                  {
+                    "text": "The "
+                  },
+                  {
+                    "blank": 2
+                  },
+                  {
+                    "text": " Room"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "80"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "Built-in dance floor and a "
+                  },
+                  {
+                    "blank": 3
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "£25"
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "segments": [
+                  {
+                    "text": "The Pine Suite"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "120"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "Large "
+                  },
+                  {
+                    "blank": 4
+                  },
+                  {
+                    "text": " facing the park"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "£ "
+                  },
+                  {
+                    "blank": 5
+                  }
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "id": "g2",
+          "type": "notes",
+          "range": "6-10",
+          "numbers": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "marks": 5,
+          "instructions": "Complete the notes below.",
+          "wordLimit": "Write ONE WORD ONLY for each answer.",
+          "heading": "Event Details & Rules",
+          "noteLines": [
+            {
+              "segments": [
+                {
+                  "text": "Must pay a "
+                },
+                {
+                  "blank": 6
+                },
+                {
+                  "text": " to fully secure the booking."
+                }
+              ],
+              "bullet": true
+            },
+            {
+              "segments": [
+                {
+                  "text": "A special "
+                },
+                {
+                  "blank": 7
+                },
+                {
+                  "text": " is required from the local council if selling alcohol."
+                }
+              ],
+              "bullet": true
+            },
+            {
+              "segments": [
+                {
+                  "text": "Need to arrange own "
+                },
+                {
+                  "blank": 8
+                },
+                {
+                  "text": " for the guests in case of accidents."
+                }
+              ],
+              "bullet": true
+            },
+            {
+              "segments": [
+                {
+                  "text": "Free parking is available behind the "
+                },
+                {
+                  "blank": 9
+                },
+                {
+                  "text": " at weekends."
+                }
+              ],
+              "bullet": true
+            },
+            {
+              "segments": [
+                {
+                  "text": "Manager's surname: "
+                },
+                {
+                  "blank": 10
+                }
+              ],
+              "bullet": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "answers": {
+    "1": [
+      "kitchen"
+    ],
+    "2": [
+      "Oak"
+    ],
+    "3": [
+      "stage"
+    ],
+    "4": [
+      "balcony"
+    ],
+    "5": [
+      "40"
+    ],
+    "6": [
+      "deposit"
+    ],
+    "7": [
+      "license",
+      "licence"
+    ],
+    "8": [
+      "insurance"
+    ],
+    "9": [
+      "library"
+    ],
+    "10": [
+      "Bramley"
+    ]
+  }
+}

@@ -1,0 +1,307 @@
+{
+  "id": 6,
+  "slug": "test06",
+  "title": "IELTS General Listening Test 6",
+  "type": "IELTS General Training",
+  "audio": "/audio/test06.mp3",
+  "image": "/images/test06.png",
+  "totalQuestions": 10,
+  "durationSeconds": 480,
+  "sections": [
+    {
+      "id": 1,
+      "title": "Section 1",
+      "durationSeconds": 480,
+      "questionRange": "1-10",
+      "groups": [
+        {
+          "id": "g1",
+          "type": "table",
+          "range": "1-5",
+          "numbers": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "marks": 5,
+          "instructions": "Complete the table below.",
+          "wordLimit": "Write ONE WORD AND/OR A NUMBER for each answer.",
+          "tableColumns": [
+            "Class Name",
+            "Main Focus",
+            "Other Details",
+            "Cost"
+          ],
+          "tableRows": [
+            [
+              {
+                "segments": [
+                  {
+                    "text": "'Bake and Make'"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "bread and pastries"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "taught by a local "
+                  },
+                  {
+                    "blank": 1
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "£45"
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "segments": [
+                  {
+                    "text": "'Taste of Asia'"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "traditional "
+                  },
+                  {
+                    "blank": 2
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "lesson on using spices"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "£ "
+                  },
+                  {
+                    "blank": 3
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "segments": [
+                  {
+                    "text": "'Ocean Bounty'"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "preparing "
+                  },
+                  {
+                    "blank": 4
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "bring own "
+                  },
+                  {
+                    "blank": 5
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "£55"
+                  }
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "id": "g2",
+          "type": "table",
+          "range": "6-10",
+          "numbers": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "marks": 5,
+          "instructions": "Complete the table below.",
+          "wordLimit": "Write ONE WORD ONLY for each answer.",
+          "tableColumns": [
+            "Topic",
+            "Details"
+          ],
+          "tableRows": [
+            [
+              {
+                "segments": [
+                  {
+                    "text": "Location"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "next to the city "
+                  },
+                  {
+                    "blank": 6
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "segments": [
+                  {
+                    "text": "Parking"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "free on "
+                  },
+                  {
+                    "blank": 7
+                  },
+                  {
+                    "text": " evenings"
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "segments": [
+                  {
+                    "text": "Allergies"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "must inform staff of any "
+                  },
+                  {
+                    "blank": 8
+                  },
+                  {
+                    "text": " allergy"
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "segments": [
+                  {
+                    "text": "Discounts"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "10% off for a "
+                  },
+                  {
+                    "blank": 9
+                  },
+                  {
+                    "text": " booking"
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "segments": [
+                  {
+                    "text": "Contact"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "Manager: Peter "
+                  },
+                  {
+                    "blank": 10
+                  }
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "answers": {
+    "1": [
+      "baker"
+    ],
+    "2": [
+      "curry"
+    ],
+    "3": [
+      "60",
+      "sixty"
+    ],
+    "4": [
+      "seafood"
+    ],
+    "5": [
+      "apron"
+    ],
+    "6": [
+      "library"
+    ],
+    "7": [
+      "weekend",
+      "weekends"
+    ],
+    "8": [
+      "nut"
+    ],
+    "9": [
+      "group"
+    ],
+    "10": [
+      "Finch"
+    ]
+  }
+}

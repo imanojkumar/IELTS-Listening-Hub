@@ -1,0 +1,317 @@
+{
+  "id": 7,
+  "slug": "test07",
+  "title": "IELTS General Listening Test 7",
+  "type": "IELTS General Training",
+  "audio": "/audio/test07.mp3",
+  "image": "/images/test07.png",
+  "totalQuestions": 10,
+  "durationSeconds": 480,
+  "sections": [
+    {
+      "id": 1,
+      "title": "Section 1",
+      "durationSeconds": 480,
+      "questionRange": "1-10",
+      "groups": [
+        {
+          "id": "g1",
+          "type": "table",
+          "range": "1-5",
+          "numbers": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "marks": 5,
+          "instructions": "Complete the table below.",
+          "wordLimit": "Write ONE WORD AND/OR A NUMBER for each answer.",
+          "tableColumns": [
+            "Model",
+            "Main Features",
+            "Cost per Week"
+          ],
+          "tableRows": [
+            [
+              {
+                "segments": [
+                  {
+                    "text": "Explorer"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "Sleeps 4, small kitchen, built-in "
+                  },
+                  {
+                    "blank": 1
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "£650"
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "segments": [
+                  {
+                    "text": "Voyager"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "Large dining space, attached "
+                  },
+                  {
+                    "blank": 2
+                  },
+                  {
+                    "text": " rack"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "£725"
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "segments": [
+                  {
+                    "text": "Cruiser"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "Spacious, solar panel, high-quality "
+                  },
+                  {
+                    "blank": 3
+                  },
+                  {
+                    "text": " for cold nights"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "£ "
+                  },
+                  {
+                    "blank": 4
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "segments": [
+                  {
+                    "text": "Mileage limit"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "Maximum of "
+                  },
+                  {
+                    "blank": 5
+                  },
+                  {
+                    "text": " kilometres per week"
+                  }
+                ]
+              },
+              {
+                "segments": []
+              }
+            ]
+          ]
+        },
+        {
+          "id": "g2",
+          "type": "table",
+          "range": "6-10",
+          "numbers": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "marks": 5,
+          "instructions": "Complete the table below.",
+          "wordLimit": "Write ONE WORD AND/OR A NUMBER for each answer.",
+          "tableColumns": [
+            "Item / Policy",
+            "Details"
+          ],
+          "tableRows": [
+            [
+              {
+                "segments": [
+                  {
+                    "text": "Cooking"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "Portable "
+                  },
+                  {
+                    "blank": 6
+                  },
+                  {
+                    "text": " available for £25"
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "segments": [
+                  {
+                    "text": "Furniture"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "Pack includes folding chairs and a lightweight "
+                  },
+                  {
+                    "blank": 7
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "segments": [
+                  {
+                    "text": "Connectivity"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "Portable "
+                  },
+                  {
+                    "blank": 8
+                  },
+                  {
+                    "text": " provides internet access (£20)"
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "segments": [
+                  {
+                    "text": "Returning the van"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "A "
+                  },
+                  {
+                    "blank": 9
+                  },
+                  {
+                    "text": " fee applies if the waste water tank is not emptied"
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "segments": [
+                  {
+                    "text": "Contact"
+                  }
+                ]
+              },
+              {
+                "segments": [
+                  {
+                    "text": "Email driver's license to David "
+                  },
+                  {
+                    "blank": 10
+                  },
+                  {
+                    "text": " (Bookings Manager)"
+                  }
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "answers": {
+    "1": [
+      "shower"
+    ],
+    "2": [
+      "bicycle",
+      "bike"
+    ],
+    "3": [
+      "heater"
+    ],
+    "4": [
+      "840"
+    ],
+    "5": [
+      "1000",
+      "1,000"
+    ],
+    "6": [
+      "barbecue",
+      "BBQ"
+    ],
+    "7": [
+      "table"
+    ],
+    "8": [
+      "router"
+    ],
+    "9": [
+      "cleaning"
+    ],
+    "10": [
+      "Sutton"
+    ]
+  }
+}
